@@ -8,7 +8,9 @@ To run the website locally, follow these steps:
 ```
 composer install
 
-#then run the app
-composer artisan serve
+#then run the app in two terminals
+php artisan serve
+
+npm install && npm run dev 
 ```
 
