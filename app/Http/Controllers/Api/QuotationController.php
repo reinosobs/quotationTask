@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Validator;
 
 class QuotationController extends Controller
 {
+    // I tried the JWT Authorization but it didnt work when it comes from my web controller
+    // If I try from Postman app, is working the JWT Authorization.
+    // public function __construct()
+    // {
+    //     $this->middleware('jwt.auth');
+    // }
     public function calculateTotal(Request $request)
     {   
         $validator = Validator::make($request->all(),[

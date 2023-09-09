@@ -15,9 +15,12 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/', [UserController::class, 'index'])->name('home');
-Route::post('/quotation', [UserController::class, 'quotation'])->name('quotation');
 
-Route::match(['get', 'post'],'/login', [AuthController::class, 'login'])->name('login');
+Route::match(['get', 'post'],'/', [AuthController::class, 'login'])->name('login');
 Route::match(['get', 'post'],'/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::post('/quotation', [App\Http\Controllers\HomeController::class, 'quotation'])->name('quotation');

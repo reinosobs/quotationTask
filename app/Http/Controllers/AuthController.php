@@ -6,17 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
-    public function __construct() {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
-    }
     /**
      * Get a JWT via given credentials.
      *
@@ -37,10 +30,13 @@ class AuthController extends Controller
         }
         if (! $token = auth()->attempt($validator->validated())) {
             return response()->json(['error' => 'Invalidate Credentials'], 401);
-        }
-        return redirect()->route('home')->with('success', 'You are login now.');
+        }  
+        $jwtToken = $this->respondWithToken($token);
+
+        return response()->json(['token' => $jwtToken], 200);
 
     }
+
     /**
      * Register a User.
      *
@@ -97,11 +93,12 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function createNewToken($token){
+    protected function respondWithToken($token)
+    {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
             'user' => auth()->user()
         ]);
     }
